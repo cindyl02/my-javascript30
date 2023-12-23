@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Whack A Mole!</title>
+    <link
+      href="https://fonts.googleapis.com/css?family=Amatic+SC:400,700"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="../favicon.ico" />
+  </head>
+  <body>
+    <h1>Whack-a-mole! <span class="score">0</span></h1>
+    <button class="start-btn" onClick="startGame()">Start!</button>
+
+    <div class="game">
+      <div class="hole hole1">
+        <div class="mole"></div>
+      </div>
+      <div class="hole hole2">
+        <div class="mole"></div>
+      </div>
+      <div class="hole hole3">
+        <div class="mole"></div>
+      </div>
+      <div class="hole hole4">
+        <div class="mole"></div>
+      </div>
+      <div class="hole hole5">
+        <div class="mole"></div>
+      </div>
+      <div class="hole hole6">
+        <div class="mole"></div>
+      </div>
+    </div>
+
+    <script>
+      const holes = document.querySelectorAll(".hole");
+      const scoreBoard = document.querySelector(".score");
+      const moles = document.querySelectorAll(".mole");
+      let lastHole;
+      let timeUp = false;
+
+      function randTime(min, max) {
+        return Math.round(Math.random() * (max - min) + min);
+      }
+
+      function randHole(holes) {
+        const index = Math.floor(Math.random() * holes.length);
+        const hole = holes[index];
+        if (hole === lastHole) {
+          return randHole(holes);
+        }
+        lastHole = hole;
+        return hole;
+      }
+
+      function peek() {
+        const time = randTime(200, 1000);
+        const hole = randHole(holes);
+        hole.classList.add("up");
+        setTimeout(() => {
+          if (hole.classList.contains("up")) {
+            hole.classList.remove("up");
+          }
+          if (!timeUp) {
+            peek();
+          }
+        }, time);
+      }
+
+      function bonk(e) {
+        if (!e.isTrusted) {
+          return;
+        }
+        this.parentElement.classList.remove("up");
+        scoreBoard.textContent = parseInt(scoreBoard.textContent) + 1;
+      }
+
+      function startGame() {
+        scoreBoard.textContent = 0;
+        timeUp = false;
+        peek();
+        setTimeout(() => (timeUp = true), 10000);
+      }
+
+      moles.forEach((mole) => mole.addEventListener("click", bonk));
+    </script>
+  </body>
+</html>
