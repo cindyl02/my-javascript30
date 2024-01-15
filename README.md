@@ -1,4 +1,4 @@
-# JavaScript 30 Challenge by WesBos
+# JavaScript 30 Challenge by WesBos (2020)
 Completed solutions for the JavaScript 30 Day Challenge https://JavaScript30.com
 
 Challenges
